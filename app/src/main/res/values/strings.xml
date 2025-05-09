@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ExamenFinalSqlite-java</string>
+    <string name="txtMiName">Diaz Diaz Miguel Alexis</string>
+    <string name="txtName">Nombre</string>
+    <string name="txtNombreUsuario">Nombre usuario</string>
+    <string name="txtIP">IP</string>
+    <string name="txtAgregar">Agregar Nuevo Alumno</string>
+    <string name="txtMostrar">Mostrar Lista</string>
+
+    <string name="txtNombreA">Nombre</string>
+    <string name="txtUsuarioA">Usuario</string>
+    <string name="txtIpA">IP</string>
+    <string name="rdBtnPC">pc</string>
+    <string name="rdBtnLaptop">laptop</string>
+    <string name="txtMaquina">Maquina</string>
+    <string name="btnGuardar">Guardar Alumno</string>
+    <string name="btnSalir">Salir</string>
+
+    <string name="btnRegresar">Regresar</string>
+</resources>
