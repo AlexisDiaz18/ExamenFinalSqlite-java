@@ -8,7 +8,7 @@
     <string name="txtMostrar">Mostrar Lista</string>
 
     <string name="txtNombreA">Nombre</string>
-    <string name="txtUsuarioA">Usuario</string>
+    <string name="txtUsuarioA">Maquina</string>
     <string name="txtIpA">IP</string>
     <string name="rdBtnPC">pc</string>
     <string name="rdBtnLaptop">laptop</string>

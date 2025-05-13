@@ -1,6 +1,7 @@
 package com.example.examenfinalsqlite_java;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -13,8 +14,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class agregarAlumno extends AppCompatActivity {
     private EditText editNombre = null;
@@ -22,6 +32,7 @@ public class agregarAlumno extends AppCompatActivity {
     private EditText editIp = null;
     private RadioGroup rdGroup = null;
     private RadioButton rdButton = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,48 +50,55 @@ public class agregarAlumno extends AppCompatActivity {
         rdGroup = findViewById(R.id.rdGroup);
         Button btnGuardar = findViewById(R.id.btnGuardar);
         Button btnSalir = findViewById(R.id.btnSalir);
-        DBHelper dbHelper = new DBHelper(this);
 
-
-        btnGuardar.setOnClickListener(v ->{
-
+        btnGuardar.setOnClickListener(v -> {
             String nombre = editNombre.getText().toString();
             String usuario = editUsuario.getText().toString();
             String ip = editIp.getText().toString();
 
-            if(!nombre.isEmpty() && !usuario.isEmpty() && !ip.isEmpty()){
+            if (!nombre.isEmpty() && !usuario.isEmpty() && !ip.isEmpty()) {
 
                 int selectedId = rdGroup.getCheckedRadioButtonId();
-
-                if(selectedId != -1){
+                if (selectedId != -1) {
                     rdButton = findViewById(selectedId);
                     String selected = rdButton.getText().toString();
 
-                    if (selected != null && !selected.trim().isEmpty()) {
+                    // URL de la API para agregar el alumno
+                    String url = "http://nocompila.lat/~AlexisDiaz/ApiRest/API/create.php";
 
-                        boolean exito = dbHelper.insertarAlumno(nombre,usuario,ip,selected);
-
-                        if(exito){
-                            Toast.makeText(this, "Alumno guardado", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show();
-                        }
-
-                    } else {
-                        Toast.makeText(this, "Tipo de máquina inválido", Toast.LENGTH_SHORT).show();
+                    // Crear un objeto JSON con los datos a enviar
+                    JSONObject params = new JSONObject();
+                    try {
+                        params.put("nombre", nombre);
+                        params.put("usuarioMaquina", usuario);
+                        params.put("ip", ip);
+                        params.put("img", selected);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
-                }else{
-                    Toast.makeText(this, "Por favor de elegir una maquina", Toast.LENGTH_LONG).show();
+                    // Crear la solicitud de tipo POST con JsonObjectRequest
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                            response -> {
+                                Toast.makeText(this, "Alumno guardado en API: " + response.toString(), Toast.LENGTH_SHORT).show();
+                            },
+                            error -> {
+                                Toast.makeText(this, "Error en la API: " + error.toString(), Toast.LENGTH_LONG).show();
+                            });
+
+                    // Crea la cola de solicitudes de Volley y envía la solicitud
+                    RequestQueue queue = Volley.newRequestQueue(this);
+                    queue.add(jsonObjectRequest);
+
+                } else {
+                    Toast.makeText(this, "Por favor elija una máquina", Toast.LENGTH_LONG).show();
                 }
 
-            }else{
-                Toast.makeText(this, "Por favor de rellenar los datos", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_LONG).show();
             }
         });
 
-        btnSalir.setOnClickListener(v ->{
-            finish();
-        });
+        btnSalir.setOnClickListener(v -> finish());
     }
 }

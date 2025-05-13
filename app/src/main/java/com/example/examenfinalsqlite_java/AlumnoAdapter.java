@@ -54,7 +54,7 @@ public class AlumnoAdapter extends RecyclerView.Adapter<AlumnoAdapter.AlumnoView
         }
 
         holder.textNombre.setText(alumno.getNombre());
-        holder.textUsuario.setText(String.format("Usuario: %s",alumno.getUsuario()));
+        holder.textUsuario.setText(String.format("Maquina: %s",alumno.getUsuario()));
         holder.textIp.setText(String.format("IP: %s", alumno.getIp()));
     }
 
